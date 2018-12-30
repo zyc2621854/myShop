@@ -4,6 +4,7 @@ package android.kanzz.com.myshop.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,9 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +63,23 @@ public class HomeFragment extends Fragment {
         mSliderLayout.setCustomAnimation(new DescriptionAnimation());
         mSliderLayout.setPresetTransformer(SliderLayout.Transformer.RotateUp);
         mSliderLayout.setDuration(3000);
+
+        mSliderLayout.addOnPageChangeListener(new ViewPagerEx.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d(TAG,"onPageScrolled");
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d(TAG,"onPageSelected");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.d(TAG,"onPageScrollStateChanged");
+            }
+        });
     }
 
 }
