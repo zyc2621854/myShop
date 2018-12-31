@@ -1,6 +1,8 @@
 package android.kanzz.com.myshop.adapter;
 
+import android.content.Context;
 import android.kanzz.com.myshop.R;
+import android.kanzz.com.myshop.bean.HomeCampaign;
 import android.kanzz.com.myshop.bean.HomeCategory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -19,10 +23,13 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
     private LayoutInflater mInflater;
 
-    private List<HomeCategory> mDatas;
+    private List<HomeCampaign> mDatas;
 
-    public HomeCategoryAdapter(List<HomeCategory> datas){
+    private Context mContext;
+
+    public HomeCategoryAdapter(List<HomeCampaign> datas,Context context){
         mDatas=datas;
+        this.mContext=context;
     }
 
     @NonNull
@@ -37,16 +44,21 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        HomeCategory category = mDatas.get(i);
-        viewHolder.textTitle.setText(category.getName());
-        viewHolder.imageViewBig.setImageResource(category.getImgBig());
-        viewHolder.imageViewSmallTop.setImageResource(category.getImgSmallTop());
-        viewHolder.imageViewSmallBottom.setImageResource(category.getImgSmallBottom());
+        HomeCampaign homeCampaign = mDatas.get(i);
+        viewHolder.textTitle.setText(homeCampaign.getTitle());
+//        viewHolder.imageViewBig.setImageResource(homeCampaign.getCpOne());
+//        viewHolder.imageViewSmallTop.setImageResource(homeCampaign.getImgSmallTop());
+//        viewHolder.imageViewSmallBottom.setImageResource(homeCampaigny.getImgSmallBottom());
+
+        Picasso.with(mContext).load(homeCampaign.getCpOne().getImgUrl()).into(viewHolder.imageViewBig);
+        Picasso.with(mContext).load(homeCampaign.getCpTwo().getImgUrl()).into(viewHolder.imageViewSmallTop);
+        Picasso.with(mContext).load(homeCampaign.getCpThree().getImgUrl()).into(viewHolder.imageViewSmallBottom);
     }
 
     @Override
     public int getItemCount() {
         return mDatas.size();
+//        return 0;
     }
 
     @Override

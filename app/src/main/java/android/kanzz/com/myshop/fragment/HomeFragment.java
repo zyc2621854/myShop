@@ -1,9 +1,11 @@
 package android.kanzz.com.myshop.fragment;
 
 
+import android.kanzz.com.myshop.Contants;
 import android.kanzz.com.myshop.adapter.DividerItemDecortion;
 import android.kanzz.com.myshop.adapter.HomeCategoryAdapter;
 import android.kanzz.com.myshop.bean.Banner;
+import android.kanzz.com.myshop.bean.HomeCampaign;
 import android.kanzz.com.myshop.bean.HomeCategory;
 import android.kanzz.com.myshop.http.BaseCallback;
 import android.kanzz.com.myshop.http.OkHttpHelper;
@@ -102,30 +104,66 @@ public class HomeFragment extends Fragment {
          });
     }
 
+
+
+//    private void initRecyclerView(View view) {
+//        mRecyclerView=(RecyclerView) view.findViewById(R.id.recyclerview);
+//
+//        List<HomeCategory> datas=new ArrayList<>(15);
+//
+//        HomeCategory category = new HomeCategory("热门活动",R.drawable.img_big_1,R.drawable.img_1_small1,R.drawable.img_1_small2);
+//        datas.add(category);
+//
+//        category = new HomeCategory("有利可图",R.drawable.img_big_4,R.drawable.img_4_small1,R.drawable.img_4_small2);
+//        datas.add(category);
+//        category = new HomeCategory("品牌街",R.drawable.img_big_2,R.drawable.img_2_small1,R.drawable.img_2_small2);
+//        datas.add(category);
+//
+//        category = new HomeCategory("金融街 包赚翻",R.drawable.img_big_1,R.drawable.img_3_small1,R.drawable.imag_3_small2);
+//        datas.add(category);
+//
+//        category = new HomeCategory("超值购",R.drawable.img_big_0,R.drawable.img_0_small1,R.drawable.img_0_small2);
+//        datas.add(category);
+//
+//        mAdapter=new HomeCategoryAdapter(datas);
+//        mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerView.addItemDecoration(new DividerItemDecortion());
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+//
+//    }
+
     private void initRecyclerView(View view) {
         mRecyclerView=(RecyclerView) view.findViewById(R.id.recyclerview);
 
-        List<HomeCategory> datas=new ArrayList<>(15);
+        httpHelper.get(Contants.API.CAMPAIGN_HOME, new BaseCallback<List<HomeCampaign>>() {
 
-        HomeCategory category = new HomeCategory("热门活动",R.drawable.img_big_1,R.drawable.img_1_small1,R.drawable.img_1_small2);
-        datas.add(category);
+            @Override
+            public void onRequestBefore(Request request) {
 
-        category = new HomeCategory("有利可图",R.drawable.img_big_4,R.drawable.img_4_small1,R.drawable.img_4_small2);
-        datas.add(category);
-        category = new HomeCategory("品牌街",R.drawable.img_big_2,R.drawable.img_2_small1,R.drawable.img_2_small2);
-        datas.add(category);
+            }
 
-        category = new HomeCategory("金融街 包赚翻",R.drawable.img_big_1,R.drawable.img_3_small1,R.drawable.imag_3_small2);
-        datas.add(category);
+            @Override
+            public void onFailure(Request request, IOException e) {
 
-        category = new HomeCategory("超值购",R.drawable.img_big_0,R.drawable.img_0_small1,R.drawable.img_0_small2);
-        datas.add(category);
+            }
 
-        mAdapter=new HomeCategoryAdapter(datas);
+            @Override
+            public void onSuccess(Response response, List<HomeCampaign> homeCampaigns) {
+                initData(homeCampaigns);
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+
+            }
+        });
+    }
+
+    private void initData(List<HomeCampaign> homeCampaigns){
+        mAdapter=new HomeCategoryAdapter(homeCampaigns,getContext());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecortion());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-
     }
 
     private void initSlider(){

@@ -68,21 +68,19 @@ public class OkHttpHelper {
 
                     String resultStr = response.body().string();
                     if (callback.mType == String.class) {
-                        callback.onSuccess(response, resultStr);
-
                         callbackSuccess(callback,response,resultStr);
                     } else {
                         try {
                             Object object = gson.fromJson(resultStr, callback.mType);
-                            callback.onSuccess(response, object);
+                            callbackSuccess(callback,response,object);
                         } catch (JsonParseException e) {
                             callback.onError(response, response.code(), e);
                         }
 
                     }
-                    callback.onSuccess(response, null);
-                } else {
-                    callback.onError(response, response.code(), null);
+                }
+                else {
+                    callbackError(callback,response,null);
                 }
             }
         });
@@ -139,6 +137,15 @@ public class OkHttpHelper {
             @Override
             public void run() {
                 callback.onSuccess(response,object);
+            }
+        });
+    }
+
+    private void callbackError(final BaseCallback callback, final Response response, final Exception e){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onError(response,response.code(),e);
             }
         });
     }
